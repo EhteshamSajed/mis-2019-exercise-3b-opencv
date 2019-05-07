@@ -3,3 +3,5 @@
 Mohammad Ehtesham Uddin Chowdhury Sajed #119509
 
 Arup Mazumder #120546
+
+Correct size of the circle was determined by the rect size of the nose area. The x axis length was divided by 4 and used as the radius.
