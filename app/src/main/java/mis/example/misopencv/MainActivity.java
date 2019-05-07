@@ -124,29 +124,9 @@ public class MainActivity extends AppCompatActivity implements CvCameraViewListe
 
     public Mat onCameraFrame(CvCameraViewFrame inputFrame) {
 
-        //return inputFrame.rgba();
-        /*
-        Mat col  = inputFrame.rgba();
-        Rect foo = new Rect(new Point(100,100), new Point(200,200));
-        Imgproc.rectangle(col, foo.tl(), foo.br(), new Scalar(0, 0, 255), 3);
-        return col;
-        */
-
-        /*Mat gray = inputFrame.gray();
-        Mat col  = inputFrame.rgba();
-
-        Mat tmp = gray.clone();
-        Imgproc.Canny(gray, tmp, 80, 100);
-        Imgproc.cvtColor(tmp, col, Imgproc.COLOR_GRAY2RGBA, 4);
-        return col;
-
-        */
-
-
-
-        /**************************************************************/
-
         Mat gray = inputFrame.gray();
+        Mat col  = inputFrame.rgba();
+
         boolean faceDetected = false;
 
         MatOfRect facesMatOfRect = new MatOfRect();
@@ -158,7 +138,8 @@ public class MainActivity extends AppCompatActivity implements CvCameraViewListe
 
             //      https://www.tutorialspoint.com/opencv/opencv_drawing_rectangle.htm
             //      https://docs.opencv.org/3.1.0/d2/d44/classcv_1_1Rect__.html
-            Imgproc.rectangle(gray, facesRectArray[i].tl(), facesRectArray[i].br(), new Scalar(0, 255, 0, 255), 3);
+            //      https://www.programcreek.com/java-api-examples/?class=org.opencv.imgproc.Imgproc&method=rectangle
+            Imgproc.rectangle(col, facesRectArray[i].tl(), facesRectArray[i].br(), new Scalar(100), 3);
             faceDetected = true;
         }
 
@@ -168,19 +149,15 @@ public class MainActivity extends AppCompatActivity implements CvCameraViewListe
             Rect[] nosesRectArray = nosesMatOfRect.toArray();
             for (int j = 0; j < nosesRectArray.length; j++) {
 
-                //      https://www.tutorialspoint.com/opencv/opencv_drawing_rectangle.htm
-                //      https://docs.opencv.org/3.1.0/d2/d44/classcv_1_1Rect__.html
-                Imgproc.rectangle(gray, nosesRectArray[j].tl(), nosesRectArray[j].br(), new Scalar(0, 255, 0, 255), 3);
+                //      https://docs.opencv.org/3.4/d3/d96/tutorial_basic_geometric_drawing.html
+
+                Point center = new Point((nosesRectArray[j].tl().x + nosesRectArray[j].br().x)/2, (nosesRectArray[j].tl().y + nosesRectArray[j].br().y)/2);
+                int width =(int) (Math.abs(nosesRectArray[j].tl().x - nosesRectArray[j].br().x)/4);
+                Imgproc.circle(col, center, width, new Scalar(255,0,0), -1, 8, 0);
             }
         }
 
-
-
-
-
-
-
-        return gray;
+        return col;
     }
 
 
